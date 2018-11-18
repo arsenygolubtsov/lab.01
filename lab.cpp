@@ -54,153 +54,144 @@ bool Table::is_appropriate(int x) {
        return true;
 }
 int Table::serch_supporting_column_approptiate(int x) {
-
-int i = 0;
-for (i = 0; i < x; i++)
-if (_simplex_table[i][0] < 0)
-break;
-
-for (unsigned int j = 1; j < x + 1; j++)
-if (_simplex_table[i][j] < 0)
-return j;
-
-return 0;
+       int i = 0;
+       for (i = 0; i < x; i++)
+              if (_simplex_table[i][0] < 0)
+                     break;
+       for (unsigned int j = 1; j < x + 1; j++)
+              if (_simplex_table[i][j] < 0)
+                     return j;
+       return 0;
 }
+
 int Table::serch_supporting_column(int x) {
-for (unsigned int j = 1; j < x + 1; j++)
-if (_simplex_table[x][j] > 0)
-return j;
-
-return 0;
+       for (unsigned int j = 1; j < x + 1; j++)
+              if (_simplex_table[x][j] > 0)
+                     return j;
+       return 0;
 }
+
 int Table::serch_supporting_string(int j, int x) {
-int i_min = 0;
-double min = 0;
-for (unsigned int i = 0; i < x + 1; i++)
-if ((_simplex_table[i][j] > 0) && (_simplex_table[i][0] / _simplex_table[i][j]
-
-> 0)) {
-
-min = _simplex_table[i][0] / _simplex_table[i][1];
-i_min = i;
-break;
+       int i_min = 0;
+       double min = 0;
+       for (unsigned int i = 0; i < x + 1; i++)
+              if ((_simplex_table[i][j] > 0) && (_simplex_table[i][0] / _simplex_table[i][j]> 0)) {
+                     min = _simplex_table[i][0] / _simplex_table[i][1];
+                     i_min = i;
+                     break;
+              }
+       for (unsigned int i = 0; i < x + 1; i++)
+              if ((_simplex_table[i][j] > 0) && (_simplex_table[i][0] / _simplex_table[i][j]< min) && (_simplex_table[i][0] / _simplex_table[i][j] > 0)) {
+                     min = _simplex_table[i][0] / _simplex_table[i][j];
+                     i_min = i;
+              }
+       return i_min;
 }
-for (unsigned int i = 0; i < x + 1; i++)
-if ((_simplex_table[i][j] > 0) && (_simplex_table[i][0] / _simplex_table[i][j]
 
-< min) && (_simplex_table[i][0] / _simplex_table[i][j] > 0)) {
-min = _simplex_table[i][0] / _simplex_table[i][j];
-i_min = i;
-}
-return i_min;
-}
 void Table::swap_x(int i_const, int j_const, int x) {
-double** _simplex_table_curr = new double*[x + 1];
-for (unsigned int i = 0; i < x + 1; i++)
-_simplex_table_curr[i] = new double[x + 1];
-for (unsigned int i = 0; i < x + 1; i++)
-for (unsigned int j = 0; j < x + 1; j++)
-_simplex_table_curr[i][j] = _simplex_table[i][j];
+       double** _simplex_table_curr = new double*[x + 1];
+       for (unsigned int i = 0; i < x + 1; i++)
+              _simplex_table_curr[i] = new double[x + 1];
+       for (unsigned int i = 0; i < x + 1; i++)
+              for (unsigned int j = 0; j < x + 1; j++)
+                     _simplex_table_curr[i][j] = _simplex_table[i][j];
 
-_simplex_table_curr[i_const][j_const] = 1 / _simplex_table[i_const][j_const];
-for (unsigned int i = 0; i < x + 1; i++)
-for (unsigned int j = 0; j < x + 1; j++) {
-if ((i == i_const) && (j != j_const)) {
-_simplex_table_curr[i][j] = _simplex_table[i][j] /
-
-_simplex_table[i_const][j_const];
-
-}
-if ((j == j_const) && (i != i_const)) {
-_simplex_table_curr[i][j] = -(_simplex_table[i][j] /
-
-_simplex_table[i_const][j_const]);
-
-}
-if ((i != i_const) && (j != j_const))
-_simplex_table_curr[i][j] = _simplex_table[i][j] -
-
-(_simplex_table[i][j_const] * _simplex_table[i_const][j] /
-_simplex_table[i_const][j_const]);
-
-}
-for (unsigned int i = 0; i < x + 1; i++)
-for (unsigned int j = 0; j < x + 1; j++) {
-_simplex_table[i][j] = _simplex_table_curr[i][j];
-if (_simplex_table_curr[i][j] == -0) _simplex_table[i][j] = 0;
+       _simplex_table_curr[i_const][j_const] = 1 / _simplex_table[i_const][j_const];
+       
+       for (unsigned int i = 0; i < x + 1; i++)
+              for (unsigned int j = 0; j < x + 1; j++) {
+                     if ((i == i_const) && (j != j_const)) {
+                            _simplex_table_curr[i][j] = _simplex_table[i][j] /_simplex_table[i_const][j_const];
+                     }
+                     if ((j == j_const) && (i != i_const)) {
+                            _simplex_table_curr[i][j] = -(_simplex_table[i][j] /_simplex_table[i_const][j_const]);
+                     }
+                     if ((i != i_const) && (j != j_const))
+                            _simplex_table_curr[i][j] = _simplex_table[i][j] - (_simplex_table[i][j_const] * _simplex_table[i_const][j] /_simplex_table[i_const][j_const]);
+              }
+       
+       for (unsigned int i = 0; i < x + 1; i++)
+              for (unsigned int j = 0; j < x + 1; j++) {
+                     _simplex_table[i][j] = _simplex_table_curr[i][j];
+                     if (_simplex_table_curr[i][j] == -0) _simplex_table[i][j] = 0;
+              }
+       delete[] _simplex_table_curr;
 }
 
-delete[] _simplex_table_curr;
-}
 bool Table::is_optimal(int x) {
-for (unsigned int j = 1; j < x + 1; j++)
-if (_simplex_table[x][j] > 0)
-return false;
-
-return true;
+       for (unsigned int j = 1; j < x + 1; j++)
+              if (_simplex_table[x][j] > 0)
+                     return false;
+       return true;
 }
+
 void Table::print(int x) {
-std::cout << " S";
-for (unsigned int i = 1; i < x + 1; i++) {
-std::cout.width(10);
-std::cout << "x" << _variable[0][i];
+       std::cout << " S";
+       for (unsigned int i = 1; i < x + 1; i++) {
+              std::cout.width(10);
+              std::cout << "x" << _variable[0][i];
+       }
+       std::cout << std::endl;
+       for (unsigned int i = 0; i < x + 1; i++) {
+              std::cout.width(10);
+              if (i != x) {
+                     std::cout << "x" << _variable[i + 1][0];
+              }
+              else std::cout << " F";
+              for (unsigned int j = 0; j < x + 1; j++) {
+                     std::cout.width(10);
+                     std::cout.precision(4);
+                     std::cout << _simplex_table[i][j] << " ";
+              }
+              std::cout << std::endl;
+       }
 }
-std::cout << std::endl;
-for (unsigned int i = 0; i < x + 1; i++) {
-std::cout.width(10);
-if (i != x) {
-std::cout << "x" << _variable[i + 1][0];
-}
-else std::cout << " F";
-for (unsigned int j = 0; j < x + 1; j++) {
-std::cout.width(10);
-std::cout.precision(4);
-std::cout << _simplex_table[i][j] << " ";
-}
-std::cout << std::endl;
-}
-}
-double Table::value(int i, int j) {
-return _simplex_table[i][j];
-}
-void Table::search_appropriate_solution(int x) {
-while (!this->is_appropriate(x)) {
-int j = this->serch_supporting_column_approptiate(x);
-int i = this->serch_supporting_string(j, x);
-this->swap_x(i, j, x);
-int count = _variable[0][j];
-_variable[0][j] = _variable[i + 1][0];
-_variable[i + 1][0] = count;
-this->print(x);
-std::cout << std::endl;
-}
-}
-void Table::search_optimal_solution(int x) {
-while (!this->is_optimal(x)) {
-int j = this->serch_supporting_column(x);
-int i = this->serch_supporting_string(j, x);
-this->swap_x(i, j, x);
-int count = _variable[0][j];
-_variable[0][j] = _variable[i + 1][0];
-_variable[i + 1][0] = count;
-this->print(x);
-std::cout << std::endl;
-}
-}
-int Table::appropriate_value(int i) {
-if (_variable[i][0] == i)
-return 1;
-if (_variable[0][i] == i)
-return 2;
 
-return 0;
+double Table::value(int i, int j) {
+       return _simplex_table[i][j];
 }
+
+void Table::search_appropriate_solution(int x) {
+       while (!this->is_appropriate(x)) {
+              int j = this->serch_supporting_column_approptiate(x);
+              int i = this->serch_supporting_string(j, x);
+              this->swap_x(i, j, x);
+              int count = _variable[0][j];
+              _variable[0][j] = _variable[i + 1][0];
+              _variable[i + 1][0] = count;
+              this->print(x);
+              std::cout << std::endl;
+       }
+}
+
+void Table::search_optimal_solution(int x) {
+       while (!this->is_optimal(x)) {
+              int j = this->serch_supporting_column(x);
+              int i = this->serch_supporting_string(j, x);
+              this->swap_x(i, j, x);
+              int count = _variable[0][j];
+              _variable[0][j] = _variable[i + 1][0];
+              _variable[i + 1][0] = count;
+              this->print(x);
+              std::cout << std::endl;
+       }
+}
+
+int Table::appropriate_value(int i) {
+       if (_variable[i][0] == i)
+              return 1;
+       if (_variable[0][i] == i)
+              return 2;
+       return 0;
+}
+
 double Table::function_value(int x) {
-return _simplex_table[x][0];
+       return _simplex_table[x][0];
 }
+
 Table::~Table() {
-delete[] _variable;
-delete[] _simplex_table;
+       delete[] _variable;
+       delete[] _simplex_table;
 }
 
 int main() {
