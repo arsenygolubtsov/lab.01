@@ -203,40 +203,49 @@ delete[] _simplex_table;
 }
 
 int main() {
+        
        int x = 0;
        std::cout << "Enter the number of variables: ";
        std::cin >> x;
+        
        std::cout << "Enter c: ";
-double* c = new double[x];
-for (unsigned int i = 0; i < x; i++)
-std::cin >> c[i];
-std::cout << "Enter A: ";
-std::cout << std::endl;
-double** A = new double*[x];
-for (unsigned int i = 0; i < x; i++)
-A[i] = new double[x];
-for (unsigned int i = 0; i < x; i++)
-for (unsigned int j = 0; j < x; j++)
-std::cin >> A[i][j];
-std::cout << "Enter b: ";
-double* b = new double[x];
-for (unsigned int i = 0; i < x; i++)
-std::cin >> b[i];
-std::cout << std::endl;
-Table table(c, A, b, x);
-table.print(x);
-std::cout << std::endl;
-table.search_appropriate_solution(x);
-table.search_optimal_solution(x);
-for (unsigned int i = 1; i < x + 1; i++) {
-if (table.appropriate_value(i) == 1)
-std::cout << "x" << i << " = " << table.value(i - 1, 0) << std::endl;
-if (table.appropriate_value(i) == 2)
-std::cout << "x" << i << " = " << 0 << std::endl;
-
-}
-std::cout << "F = " << table.function_value(x)*(-1) << std::endl;
-delete c;
-delete b;
-delete[] A; 
+       double* c = new double[x];
+       for (unsigned int i = 0; i < x; i++)
+              std::cin >> c[i];
+        
+       std::cout << "Enter A: ";
+       std::cout << std::endl;
+       double** A = new double*[x];
+       for (unsigned int i = 0; i < x; i++)
+              A[i] = new double[x];
+        
+       for (unsigned int i = 0; i < x; i++)
+              for (unsigned int j = 0; j < x; j++)
+                     std::cin >> A[i][j];
+        
+       std::cout << "Enter b: ";
+       double* b = new double[x];
+       for (unsigned int i = 0; i < x; i++)
+              std::cin >> b[i];
+       std::cout << std::endl;
+        
+       Table table(c, A, b, x);
+        
+       table.print(x);
+       std::cout << std::endl;
+        
+       table.search_appropriate_solution(x);
+        
+       table.search_optimal_solution(x);
+        
+       for (unsigned int i = 1; i < x + 1; i++) {
+              if (table.appropriate_value(i) == 1)
+                     std::cout << "x" << i << " = " << table.value(i - 1, 0) << std::endl;
+              if (table.appropriate_value(i) == 2)
+                     std::cout << "x" << i << " = " << 0 << std::endl;
+       }
+       std::cout << "F = " << table.function_value(x)*(-1) << std::endl;
+       delete c;
+       delete b;
+       delete[] A; 
 }
