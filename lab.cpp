@@ -20,37 +20,38 @@ public:
        ~Table();
 };
 
+
+
+
 Table::Table(double*& c, double**& A, double*& b, int x) {
-_simplex_table = new double*[x + 1];
-for (unsigned int i = 0; i < x + 1; i++)
-_simplex_table[i] = new double[x + 1];
-for (unsigned int i = 0; i < x; i++) {
-_simplex_table[i][0] = b[i];
+       _simplex_table = new double*[x + 1];
+       for (unsigned int i = 0; i < x + 1; i++)
+              _simplex_table[i] = new double[x + 1];
+       for (unsigned int i = 0; i < x; i++) {
+              _simplex_table[i][0] = b[i];
+       }
+       for (unsigned int i = 0; i < x; i++)
+              for (unsigned int j = 0; j < x; j++) {
+                     _simplex_table[i][j + 1] = A[i][j];
+              }
+       for (unsigned int i = 0; i < x; i++) {
+              _simplex_table[x][i + 1] = c[i];
+       }  
+       _variable = new int*[x + 1];
+       for (unsigned int i = 0; i < x + 1; i++) {
+              _variable[i] = new int[x + 1];
+       }
+       for (unsigned int j = 1; j < x + 1; j++)
+              _variable[0][j] = j;
+       for (unsigned int i = 1; i < x + 1; i++)
+              _variable[i][0] = i + 3;
 }
-for (unsigned int i = 0; i < x; i++)
-for (unsigned int j = 0; j < x; j++) {
-_simplex_table[i][j + 1] = A[i][j];
-}
-for (unsigned int i = 0; i < x; i++) {
-_simplex_table[x][i + 1] = c[i];
-}  
-//Creating an array of variables
-_variable = new int*[x + 1];
-for (unsigned int i = 0; i < x + 1; i++) {
-_variable[i] = new int[x + 1];
-}
-for (unsigned int j = 1; j < x + 1; j++)
-_variable[0][j] = j;
-for (unsigned int i = 1; i < x + 1; i++)
-_variable[i][0] = i + 3;
 
-}
 bool Table::is_appropriate(int x) {
-for (unsigned int i = 0; i < x; i++)
-if (_simplex_table[i][0] < 0)
-return false;
-
-return true;
+       for (unsigned int i = 0; i < x; i++)
+              if (_simplex_table[i][0] < 0)
+                     return false;
+       return true;
 }
 int Table::serch_supporting_column_approptiate(int x) {
 
