@@ -1,23 +1,23 @@
 #include <iostream>
 
 class Table {
-double** _simplex_table; // Создаем массив коэффициентов
-int** _variable;// Создаем массив переменных
+       double** _simplex_table; // Создаем массив коэффициентов
+       int** _variable;// Создаем массив переменных
 public:
-Table(double*&, double**&, double*&, int); // Конструктор симплекс-таблицы
-bool is_appropriate(int); // Проверяем решение на допустимость
-int serch_supporting_column_approptiate(int); // Ищем разрешающий столбец для 1 этапа
-int serch_supporting_string(int, int); // Ищем разрешающую строку
-int serch_supporting_column(int); // Ищем разрешающий столбец для 2 этапа
-void swap_x(int, int, int); // Меняем строку и столбец и расчитываем симплекс-таблицу
-bool is_optimal(int); // Проверяем решение на оптимальность
-void print(int); // Выводим симплекс-таблицу на экран
-double value(int, int); // Возвращаем значение нужного элемента таблицы
-void search_appropriate_solution(int); // Ищем допустимое решение
-void search_optimal_solution(int); // Ищем оптимальное решение
-int appropriate_value(int); // Возвращает сторону массива переменных
-double function_value(int); // Возвращаем значение функции
-~Table();
+       Table(double*&, double**&, double*&, int); // Конструктор симплекс-таблицы
+       bool is_appropriate(int); // Проверяем решение на допустимость
+       int serch_supporting_column_approptiate(int); // Ищем разрешающий столбец для 1 этапа
+       int serch_supporting_string(int, int); // Ищем разрешающую строку
+       int serch_supporting_column(int); // Ищем разрешающий столбец для 2 этапа
+       void swap_x(int, int, int); // Меняем строку и столбец и расчитываем симплекс-таблицу
+       bool is_optimal(int); // Проверяем решение на оптимальность
+       void print(int); // Выводим симплекс-таблицу на экран
+       double value(int, int); // Возвращаем значение нужного элемента таблицы
+       void search_appropriate_solution(int); // Ищем допустимое решение
+       void search_optimal_solution(int); // Ищем оптимальное решение
+       int appropriate_value(int); // Возвращает сторону массива переменных
+       double function_value(int); // Возвращаем значение функции
+       ~Table();
 };
 
 Table::Table(double*& c, double**& A, double*& b, int x) {
